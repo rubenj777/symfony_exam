@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ film.title }}{% endblock %}
+
+{% block body %}
+
+    <div class="mt-5">
+
+        <div class="card mb-5">
+            <div class="card-header d-flex justify-content-between">
+                <div>
+                    <div>
+                        <p><strong>{{ film.title }}</strong></p>
+                        <p>Catégorie : {{ film.category.name }}</p>
+                    </div>
+                    <p>Ajouté par {{ film.user.username }}</p>
+                </div>
+
+                <div>
+                    {% if app.user == film.user %}
+                        <a href="{{ path('delete_film', {id:film.id}) }}" class="btn btn-danger">Supprimer le film</a>
+                        <a href="{{ path('edit_film', {id:film.id}) }}" class="btn btn-warning">Editer le film</a>
+                    {% endif %}
+
+                    <a href="{{ path('like_film', {id:film.id}) }}" class="like me-2 btn btn-{% if film.isLikedBy(app.user) %}success{% else %}secondary{% endif %}">like <span class="count">{{ film.likes|length }}</span></a>
+
+                </div>
+            </div>
+
+            <div class="card-body">
+                <p><strong class="card-text">{{ film.director }}</strong></p>
+                <p>{{ film.date|date('M d, Y') }}</p>
+                <img src="{{ vich_uploader_asset(film, 'imageFile') }}">
+                <p class="card-text">{{ film.synopsis }}</p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+        <div class="mb-5">
+            {% if app.user %}
+            {{ form_start(form, {'action':path('new_impression', {id:film.id}) }) }}
+            {{ form_widget(form.content, {'attr':{'placeholder': 'Ton commentaire'}}) }}
+            <div>
+                <button type="submit" class="btn btn-primary">Envoyer</button>
+            </div>
+            {{ form_end(form) }}
+            {% else %}
+                <p>Connectez-vous pour donner votre impression !</p>
+            {% endif %}
+        </div>
+
+    {% for impression in film.impressions %}
+        <div class="card mb-5">
+
+            <div class="card-header d-flex justify-content-between">
+                <div>
+                    <p><strong>{{ impression.createdAt|date('M d, Y - H:i') }}</strong></p>
+                    <p>{{ impression.user.username }} a commenté</p>
+                </div>
+
+                <div>
+                    {% if app.user == impression.user %}
+                    <a href="{{ path('delete_impression', {id:impression.id}) }}" class="btn btn-danger">Supprimer l'impression</a>
+                    <a href="{{ path('edit_impression', {id:impression.id}) }}" class="btn btn-warning">Editer l'impression</a>
+                    {% endif %}
+                    <a href="{{ path('like_impression', {id:impression.id}) }}" class="like me-2 btn btn-{% if impression.isLikedBy(app.user) %}success{% else %}secondary{% endif %}">like <span class="count">{{ impression.likes|length }}</span></a>
+                </div>
+
+            </div>
+
+            <div class="card-body">
+                <p>{{ impression.content }}</p>
+            </div>
+
+        </div>
+    {% endfor %}
+
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tous les films{% endblock %}
+
+{% block body %}
+
+
+    <div class="row">
+
+        <div class="col-2 mt-5">
+            <a href="{{ path('new_film') }}" class="btn btn-primary">Créer un film</a>
+        </div>
+
+        <div class="col-10 mt-5">
+            {% for film in films %}
+                <div class="card mb-5">
+                    <div class="card-header d-flex justify-content-between">
+                        <div>
+                            <p><strong>{{ film.title }}</strong></p>
+                            <p>Catégorie : {{ film.category.name }}</p>
+                        </div>
+                        <p>Ajouté par {{ film.user.username }}</p>
+                    </div>
+
+                    <div class="card-body">
+                        <p><strong class="card-text">{{ film.director }}</strong></p>
+                        <p>{{ film.date|date('M d, Y') }}</p>
+                        <img src="{{ vich_uploader_asset(film, 'imageFile')|imagine_filter('thumbnail') }}">
+                        <p class="card-text">{{ film.synopsis }}</p>
+                    </div>
+                    <a href="{{ path('show_film', {id:film.id}) }}" class="stretched-link"></a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+{% endblock %}

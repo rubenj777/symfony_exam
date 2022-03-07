@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un film{% endblock %}
+
+{% block body %}
+
+        <div class="row">
+            <div class="col-4">
+                <div class="mt-5">
+                    <a href="{{ path('index') }}" class="btn btn-primary">Back</a>
+                </div>
+            </div>
+
+            <div class="col-8 mt-5">
+                <div>
+                    {{ form_start(form) }}
+
+                    <div class="mb-3">
+                        {{ form_errors(form.title) }}
+                        {{ form_widget(form.title, {'attr': {'placeholder':'Titre du film'}}) }}
+                        {{ form_help(form.title) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_row(form.imageFile) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_row(form.category) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_errors(form.director) }}
+                        {{ form_widget(form.director, {'attr': {'placeholder':'Réalisateur'}}) }}
+                        {{ form_help(form.director) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_errors(form.date) }}
+                        {{ form_widget(form.date, {'attr': {'placeholder':'Date de sortie'}}) }}
+                        {{ form_help(form.date) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_errors(form.synopsis) }}
+                        {{ form_widget(form.synopsis, {'attr': {'placeholder':'Synopsis'}}) }}
+                        {{ form_help(form.synopsis) }}
+                    </div>
+
+                    <div class="d-flex flex-row">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+
+{% endblock %}
